@@ -1,5 +1,8 @@
 # dmtca8418
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/choco-technologies/dmtca8418/actions/workflows/ci.yml/badge.svg)](https://github.com/choco-technologies/dmtca8418/actions/workflows/ci.yml)
+
 The keyboard of the LILYGO T-Deck Pro: a driver for the **TCA8418** (Texas Instruments), a keypad scanner for up to 8 rows and 10
 columns with a FIFO of 10 key events, on I2C.
 
