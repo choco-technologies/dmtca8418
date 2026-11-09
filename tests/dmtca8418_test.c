@@ -103,12 +103,12 @@ DMOD_TEST_STEP(keys_have_names)
     DMOD_TEST_EXPECT_TRUE(key("ALT", &code));
     DMOD_TEST_EXPECT_EQ(code, DMDRVI_KEY_LEFT_ALT);
     DMOD_TEST_EXPECT_TRUE(key("SYM", &code));
-    DMOD_TEST_EXPECT_EQ(code, DMTCA8418_KEY_SYM);                  /* the keys a USB keyboard has none of: from 0x100 */
+    DMOD_TEST_EXPECT_EQ(code, DMDRVI_KEY_SYM);                  /* the codes of dmdrvi, the same for every driver */
     DMOD_TEST_EXPECT_TRUE(code >= DMDRVI_KEY_VENDOR_BASE);
     DMOD_TEST_EXPECT_TRUE(key("MIC", &code));
-    DMOD_TEST_EXPECT_EQ(code, DMTCA8418_KEY_MIC);
+    DMOD_TEST_EXPECT_EQ(code, DMDRVI_KEY_MIC);
     DMOD_TEST_EXPECT_TRUE(key("DOLLAR", &code));
-    DMOD_TEST_EXPECT_EQ(code, DMTCA8418_KEY_DOLLAR);
+    DMOD_TEST_EXPECT_EQ(code, DMDRVI_KEY_DOLLAR);
     DMOD_TEST_EXPECT_TRUE(key("-", &code));
     DMOD_TEST_EXPECT_EQ(code, 0);                                    /* a place without a key */
     DMOD_TEST_EXPECT_TRUE(key("0x2B", &code));

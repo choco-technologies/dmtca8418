@@ -15,8 +15,8 @@
 /**
  * @brief Configuration of a keyboard (the ini section of the driver)
  *
- * `keys` tells which key every place of the matrix is: the code that DMDRVI_IOCTL_INPUT_KEY_READ reports (a USB HID usage, or a code from
- * DMDRVI_KEY_VENDOR_BASE on), 0 for a place without a key.
+ * `keys` tells which key every place of the matrix is: the code that DMDRVI_IOCTL_INPUT_KEY_READ reports (a USB HID usage, or DMDRVI_KEY_SYM, _MIC,
+ * _DOLLAR), 0 for a place without a key.
  */
 typedef struct
 {

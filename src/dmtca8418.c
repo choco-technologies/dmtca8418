@@ -194,11 +194,11 @@ dmod_dmtca8418_api_declaration(1.0, bool, _parse_key, ( const char *text, size_t
     else if (word_is(text, length, "ALT"))
         *code = DMDRVI_KEY_LEFT_ALT;
     else if (word_is(text, length, "SYM"))
-        *code = DMTCA8418_KEY_SYM;
+        *code = DMDRVI_KEY_SYM;
     else if (word_is(text, length, "MIC"))
-        *code = DMTCA8418_KEY_MIC;
+        *code = DMDRVI_KEY_MIC;
     else if (word_is(text, length, "DOLLAR"))
-        *code = DMTCA8418_KEY_DOLLAR;
+        *code = DMDRVI_KEY_DOLLAR;
     else if (parse_number(text, length, &v) && v > 0 && v < 0x10000U)
         *code = (uint16_t)v;
     else

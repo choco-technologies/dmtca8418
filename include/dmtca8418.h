@@ -49,9 +49,4 @@ dmod_dmtca8418_api(1.0, uint16_t, _key_of, ( const dmtca8418_config_t *config, c
  */
 dmod_dmtca8418_api(1.0, bool, _parse_key, ( const char *text, size_t length, uint16_t *code ));
 
-/** Codes of the keys of this keyboard that a USB keyboard has none of (DMDRVI_KEY_VENDOR_BASE + n) */
-#define DMTCA8418_KEY_SYM           (DMDRVI_KEY_VENDOR_BASE + 0U)
-#define DMTCA8418_KEY_MIC           (DMDRVI_KEY_VENDOR_BASE + 1U)
-#define DMTCA8418_KEY_DOLLAR        (DMDRVI_KEY_VENDOR_BASE + 2U)
-
 #endif // DMTCA8418_H

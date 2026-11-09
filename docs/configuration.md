@@ -17,7 +17,7 @@ group of the display of the board, so that a display service finds its inputs by
 | `row0` .. `row7` | none | The keys of a row, a name for each column, separated by spaces |
 
 **The names of the keys:** a letter `A`..`Z` (capitals), a digit, `ENTER`, `ESC`, `BACKSPACE`, `TAB`, `SPACE`, `DEL`, `RIGHT`, `LEFT`,
-`DOWN`, `UP`, `CTRL`, `SHIFT` (`SHIFT_L`), `SHIFT_R`, `ALT`, and the keys a USB keyboard has none of - `SYM`, `MIC`, `DOLLAR` (codes
-0x100, 0x101, 0x102) - or a code (`0x2B`, `43`), or `-` for a place without a key.
+`DOWN`, `UP`, `CTRL`, `SHIFT` (`SHIFT_L`), `SHIFT_R`, `ALT`, and the keys a USB keyboard has none of - `SYM`, `MIC`, `DOLLAR` (the codes
+DMDRVI_KEY_SYM, DMDRVI_KEY_MIC, DMDRVI_KEY_DOLLAR of dmdrvi) - or a code (`0x2B`, `43`), or `-` for a place without a key.
 
 The places not given are keys that do not exist: their events are dropped.
