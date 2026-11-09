@@ -46,6 +46,7 @@
 #define FIFO_SIZE                   10U
 #define DEFAULT_ADDRESS             0x34U
 #define START_TRIES                 3U
+#define RETRY_MS                    2000U
 
 typedef struct
 {
@@ -72,6 +73,7 @@ struct dmdrvi_context
     node_t                backlight;
     char                 *backlight_role;
     bool                  started;          /**< The chip answered and was set up */
+    uint64_t              next_try_ms;      /**< Not before this: the chip did not answer, it is not asked again at once */
     uint8_t               light;            /**< The light as it was set, percent */
     handle_t             *handles;          /**< The open nodes */
 };
@@ -369,13 +371,18 @@ static int chip_setup(dmdrvi_context_t context)
     return ret;
 }
 
-static void try_start(dmdrvi_context_t context)
+/* Set the chip up (the lock is held). It is done when a client first asks for events - in the thread of the client, not in the callback that
+ * tells the driver about its friends (the thread of dmdevfs, while the system is starting) - and, when the chip does not answer, not more
+ * often than every RETRY_MS. */
+static void start_locked(dmdrvi_context_t context)
 {
     if (context->started || context->i2c.path == NULL)
         return;
-    dmosi_mutex_lock(context->lock);
+    uint64_t now = Dmod_GetUptime();
+    if (now < context->next_try_ms)
+        return;
     int ret = -ENODEV;
-    for (unsigned try = 0; !context->started && try < START_TRIES && ret != 0; try++)
+    for (unsigned try = 0; ret != 0 && try < START_TRIES; try++)
         ret = chip_setup(context);
     if (ret == 0)
     {
@@ -384,9 +391,9 @@ static void try_start(dmdrvi_context_t context)
     }
     else
     {
+        context->next_try_ms = now + RETRY_MS;
         DMOD_LOG_ERROR("TCA8418: no answer at 0x%02X (%d)\n", context->config.address, ret);
     }
-    dmosi_mutex_unlock(context->lock);
 }
 
 /* ---- The queues of the open nodes ---- */
@@ -421,6 +428,7 @@ static void lose_events(dmdrvi_context_t context)
 static int poll_once(dmdrvi_context_t context)
 {
     uint8_t stat = 0, count = 0;
+    start_locked(context);
     if (!context->started)
         return -ENODEV;
     int ret = reg_read(context, REG_INT_STAT, &stat);
@@ -600,11 +608,8 @@ dmod_dmdrvi_dif_api_declaration(2.0, dmtca8418, void, _friend_changed, ( dmdrvi_
         return;
     node->path = Dmod_StrDup(info->node_path);
     if (node->path == NULL)
-    {
         DMOD_LOG_ERROR("TCA8418: out of memory for the path of a friend\n");
-        return;
-    }
-    try_start(context);
+    /* (the chip is set up when a client asks for events: see start_locked()) */
 }
 
 /* A node: its queue starts empty, and what the chip kept before is thrown away (for the first one) */
