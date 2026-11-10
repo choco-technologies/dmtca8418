@@ -91,7 +91,14 @@ dmod_dmtca8418_api_declaration(1.0, bool, _validate_config, ( const dmtca8418_co
         return false;
     if (config->rows < 1 || config->rows > DMTCA8418_MAX_ROWS || config->cols < 1 || config->cols > DMTCA8418_MAX_COLS)
         return false;
-    return config->poll_ms >= 1;
+    if (config->poll_ms < 1)
+        return false;
+    for (size_t i = 0; i < sizeof(config->layout); i++)         /* (a layout is a string: it ends) */
+    {
+        if (config->layout[i] == '\0')
+            return true;
+    }
+    return false;
 }
 
 dmod_dmtca8418_api_declaration(1.0, bool, _decode_event, ( uint8_t byte, dmtca8418_raw_event_t *event ))
@@ -251,6 +258,13 @@ static int read_config(dmdrvi_context_t context, dmini_context_t ini)
     c->mirror_cols  = string_to_switch(dmini_get_string(ini, NULL, "mirror_cols", NULL), false);
     c->poll_ms      = (uint16_t)dmini_get_int(ini, NULL, "poll_ms", 10);
     c->debug        = string_to_switch(dmini_get_string(ini, NULL, "debug", NULL), false);
+    const char *layout = dmini_get_string(ini, NULL, "layout", "");
+    if (strlen(layout) >= sizeof(c->layout))
+    {
+        DMOD_LOG_ERROR("Keyboard: the name of the layout %s is too long (%u at most)\n", layout, (unsigned)sizeof(c->layout) - 1U);
+        return -EINVAL;
+    }
+    strcpy(c->layout, layout);
     context->backlight_role = Dmod_StrDup(dmini_get_string(ini, NULL, "backlight_role", "backlight"));
     if (context->backlight_role == NULL)
         return -ENOMEM;
@@ -669,6 +683,9 @@ static int get_info(dmdrvi_context_t context, dmdrvi_input_info_t *info)
     memcpy(info->name, "TCA8418", 7);
     info->type = DMDRVI_INPUT_TYPE_KEYBOARD;
     info->capabilities = DMDRVI_INPUT_CAP_KEYS | (context->backlight.path != NULL ? DMDRVI_INPUT_CAP_LIGHT : 0U);
+    /* The layout of the keys and where its file may be (cfg/layouts/dmtca8418/): libinput looks there first */
+    strcpy(info->layout, context->config.layout);
+    strcpy(info->module, "dmtca8418");
     return 0;
 }
 

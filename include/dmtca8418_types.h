@@ -25,6 +25,7 @@ typedef struct
     uint8_t  cols;                                              /**< Columns of the matrix, 1..DMTCA8418_MAX_COLS */
     bool     mirror_cols;                                       /**< The columns are counted from the other side */
     uint16_t poll_ms;                                           /**< Period of the polling of the chip while a client waits (WAIT_EVENT) */
+    char     layout[DMDRVI_INPUT_LAYOUT_MAX];                   /**< The layout of the keys the keyboard names in its info ("compact"); empty: an ordinary keyboard */
     bool     debug;                                             /**< Log every event of the chip (row, column, key): to find out the keys of a keyboard */
     uint16_t keys[DMTCA8418_MAX_ROWS][DMTCA8418_MAX_COLS];      /**< The key of every place, [row][col] */
 } dmtca8418_config_t;

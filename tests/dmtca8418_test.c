@@ -39,6 +39,11 @@ DMOD_TEST_STEP(configuration_is_checked)
     c = config_of_t_deck();
     c.poll_ms = 0;
     DMOD_TEST_EXPECT_FALSE(dmtca8418_validate_config(&c));
+    c = config_of_t_deck();
+    strcpy(c.layout, "compact");
+    DMOD_TEST_EXPECT_TRUE(dmtca8418_validate_config(&c));          /* the layout is a name... */
+    memset(c.layout, 'x', sizeof(c.layout));
+    DMOD_TEST_EXPECT_FALSE(dmtca8418_validate_config(&c));         /* ... that ends */
 }
 
 DMOD_TEST_STEP(events_of_the_chip_are_decoded)
