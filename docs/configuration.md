@@ -13,7 +13,7 @@ group of the display of the board, so that a display service finds its inputs by
 | `mirror_cols` | `no` | The columns are counted from the other side (the chip counts from the right edge of the T-Deck Pro keyboard) |
 | `poll_ms` | `10` | Period of the polling of the chip while a client waits |
 | `backlight_role` | `backlight` | `friend_role` of the line of the light |
-| `layout` | (empty) | The layout of the keys the keyboard names in its info: libinput looks for `<layout>.ini` among the files of this module (`cfg/layouts/dmtca8418/`, a `layout=` entry of the `.dmd` file), then among its own (`compact`, `numeric`); empty: an ordinary keyboard |
+| `layout` | (empty) | The layout of the keys the keyboard names in its info: libinput looks for `<layout>.ini` among the files of this module (`cfg/layouts/dmtca8418/`, a `layout=` entry of the `.dmd` file), then among its own (`numeric`); empty: an ordinary keyboard |
 | `debug` | `no` | Log every event of the chip (row, column, key) - to find the places of the keys of a keyboard |
 | `row0` .. `row7` | none | The keys of a row, a name for each column, separated by spaces |
 

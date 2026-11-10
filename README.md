@@ -24,3 +24,10 @@ TCA8418 --I2C--> dmtca8418 (/dev/keyboard) --> inputd --> libinput --> dmview, .
 
 See [docs/configuration.md](docs/configuration.md) for the configuration and [docs/api-reference.md](docs/api-reference.md) for the API.
 The configuration of the T-Deck Pro is [configs/board/t-deck-pro/keyboard.ini](configs/board/t-deck-pro/keyboard.ini).
+
+## The layout of the keys
+
+The sticky Sym key, the sym layer (the symbols printed on the keys) and `$` are specific to this keyboard, so the layout is a file of this
+module: [`configs/layouts/t-deck-pro.ini`](configs/layouts/t-deck-pro.ini). `layout=t-deck-pro` in `keyboard.ini` makes the node name it (and
+this module) in its info; a `.dmd` entry `dmtca8418 layout=layouts/t-deck-pro.ini` puts the file in `cfg/layouts/dmtca8418/`, where libinput
+looks first. Another keyboard on the chip is another layout file here.
